@@ -12,7 +12,7 @@ import { initCopyTarget } from './copyTarget'
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-  // 注册命令
+  // ------- 注册命令 --------
   initCopyTarget(context)
   initConsoleTarget(context)
   initConsoleAbove(context)
