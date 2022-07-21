@@ -1,0 +1,91 @@
+{
+	"name": "quick-console-log",
+	"displayName": "QuickConsole",
+	"description": "针对 VS Code 的一款快速生成 console.log 的插件",
+	"version": "0.1.0",
+	"engines": {
+		"vscode": "^1.69.0"
+	},
+	"categories": [
+		"Debuggers"
+	],
+	"activationEvents": [
+		"onCommand:quick-console-log.copyTarget",
+		"onCommand:quick-console-log.consoleTarget",
+		"onCommand:quick-console-log.consoleAbove",
+		"onCommand:quick-console-log.consoleBlow"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"configuration": [
+			{
+				"title": "QuickConsole",
+				"properties": {
+					"quickConsole.prefixContent": {
+						"type": "string",
+						"default": "👉🏼👉🏼👉🏼 Look at this",
+						"description": "This will add a Prefix Content before the console.log key."
+					},
+					"quickConsole.showLines": {
+						"type": "boolean",
+						"default": true,
+						"description": "This will add a Line Number after the console.log key."
+					},
+					"quickConsole.showFilename": {
+						"type": "boolean",
+						"default": false,
+						"description": "This will add a File Name after the console.log key."
+					},
+					"quickConsole.showCallFunction": {
+						"type": "boolean",
+						"default": false,
+						"description": "This will add Call Function Name after the console.log key."
+					}
+				}
+			}
+		],
+		"keybindings": [
+			{
+				"command": "quick-console-log.copyTarget",
+				"key": "Ctrl+Shift+c"
+			},
+			{
+				"command": "quick-console-log.consoleTarget",
+				"key": "Ctrl+Shift+v"
+			},
+			{
+				"command": "quick-console-log.consoleAbove",
+				"key": "Ctrl+Shift+u"
+			},
+			{
+				"command": "quick-console-log.consoleBlow",
+				"key": "Ctrl+Shift+b"
+			}
+		]
+	},
+	"scripts": {
+		"vscode:prepublish": "yarn run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "yarn run compile && yarn run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.69.0",
+		"@types/glob": "^7.2.0",
+		"@types/mocha": "^9.1.1",
+		"@types/node": "16.x",
+		"@typescript-eslint/eslint-plugin": "^5.30.0",
+		"@typescript-eslint/parser": "^5.30.0",
+		"eslint": "^8.18.0",
+		"glob": "^8.0.3",
+		"mocha": "^10.0.0",
+		"typescript": "^4.7.4",
+		"@vscode/test-electron": "^2.1.5",
+
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-prettier": "^3.4.0",
+		"prettier": "^2.3.0"
+	}
+}
