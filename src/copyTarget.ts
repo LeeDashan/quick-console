@@ -5,7 +5,7 @@ import { getConsole } from './_utils/generator'
 /** 注册 copyTarget 命令 */
 export const initCopyTarget = (context: vscode.ExtensionContext) => {
   const copyTarget = vscode.commands.registerTextEditorCommand(
-    'quick-console-log.copyTarget',
+    'quick-console-code.copyTarget',
     (textEditor) => {
       // 获取选中的文本
       const copyText = textEditor.document.getText(textEditor.selection)

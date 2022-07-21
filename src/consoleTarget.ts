@@ -5,7 +5,7 @@ import { getConsole } from './_utils/generator'
 
 export const initConsoleTarget = (context: vscode.ExtensionContext) => {
   const consoleTarget = vscode.commands.registerTextEditorCommand(
-    'quick-console-log.consoleTarget',
+    'quick-console-code.consoleTarget',
     async (textEditor) => {
       // 获取选中的文本
       const selectedText = textEditor.document.getText(textEditor.selection)
@@ -29,7 +29,7 @@ export const initConsoleTarget = (context: vscode.ExtensionContext) => {
 
 export const initConsoleAbove = (context: vscode.ExtensionContext) => {
   const consoleAbove = vscode.commands.registerTextEditorCommand(
-    'quick-console-log.consoleAbove',
+    'quick-console-code.consoleAbove',
     (textEditor) => {
       const consoleText = getConsole('', textEditor, {
         line: 'above',
@@ -42,7 +42,7 @@ export const initConsoleAbove = (context: vscode.ExtensionContext) => {
 
 export const initConsoleBlow = (context: vscode.ExtensionContext) => {
   const consoleBlow = vscode.commands.registerTextEditorCommand(
-    'quick-console-log.consoleBlow',
+    'quick-console-code.consoleBlow',
     (textEditor) => {
       const consoleText = getConsole('', textEditor, {
         line: 'blow',
