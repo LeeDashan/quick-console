@@ -4,6 +4,10 @@ All notable changes to the "quick-console-log" extension will be documented in t
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [0.2.0] - 2023.05.02
+- 修复在复制内容中存在单/双引号时，输出内容未转义的问题
+- 增加对于多光标（multiple cursor）的支持
+
 ## [0.1.0] - 2022.07.21
 
 #### QuickLog 第一版开发完成
@@ -21,4 +25,4 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 [ ] 支持自定义 `console.log` 方法名
 [ ] 支持 `warn/error/debug` 类型的 log 输出
-[ ] 支持自定义单/双引号
+[x] 支持自定义单/双引号

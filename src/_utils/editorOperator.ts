@@ -1,5 +1,12 @@
 import * as vscode from 'vscode'
 
+export const getOrderedSelections = (textEditor: vscode.TextEditor) => {
+  return textEditor.selections.map((s) => ({
+    line: s.end.line,
+    selection: s
+  })).sort(((pre, after) => pre.line - after.line))
+}
+
 /** 保存到剪贴板 */
 export const saveToClipBoard = (value: string) => {
   vscode.env.clipboard.writeText(value)
@@ -8,27 +15,32 @@ export const saveToClipBoard = (value: string) => {
 /** 插入到某一行 */
 export const insertToLine = (
   textEditor: vscode.TextEditor,
-  value: string,
-  line: number
+  editor: vscode.TextEditorEdit,
+  line: number,
+  value: string
 ) => {
-  const targetLine = textEditor.document.lineAt(line)
+  let insertPosition: vscode.Position | undefined = undefined
+  let whiteSpaces: string | undefined = undefined
+  try {
+    const targetLine = textEditor.document.lineAt(line)
 
-  const whiteSpaces = /^(\u0020)+/.exec(targetLine.text)?.[0]
+    whiteSpaces = /^(\u0020)+/.exec(targetLine.text)?.[0]
+    insertPosition = targetLine.range.start
+  } catch (err) {
+    if (line - 1 >= 0) {
+      const preLine = textEditor.document.lineAt(line - 1)
+      editor.insert(preLine.range.end, '\n')
+    }
+    insertPosition = new vscode.Position(line, 0)
+  }
 
-  // targetLine.firstNonWhitespaceCharacterIndex
-  // const start = targetLine.firstNonWhitespaceCharacterIndex
-  // const newLinePos = textEditor.document.
-
-  // vscode.window.showInformationMessage("newLinePos：" )
-
-  textEditor.edit((editor) => {
-    editor.insert(targetLine.range.start, (whiteSpaces ?? '') + value)
-  })
+  editor.insert(insertPosition, (whiteSpaces ?? '') + value)
 }
 
 /** 替换目标内容 */
-export const replaceText = (textEditor: vscode.TextEditor, value: string) => {
-  textEditor.edit((editor) => {
-    editor.replace(textEditor.selection, value)
-  })
+export const replaceText = (
+  editor: vscode.TextEditorEdit,
+  selection: vscode.Selection,
+  value: string) => {
+  editor.replace(selection, value)
 }

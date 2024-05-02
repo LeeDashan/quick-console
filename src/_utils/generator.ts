@@ -7,6 +7,12 @@ const lineTypeMap: Record<QuickConsole.LineType, number> = {
   blow: 2,
 }
 
+export const getSafeText = (text: string) => {
+  if (!text) { return '' }
+  text = text.replace(/'/g, '\\\'').replace(/"/g, '\\\"').replace(/\n+/g, ' ').replace(/\s{2,}/g, ' ')
+  return `- ${text}: `
+}
+
 /**
  * 获取 console.log 的文字部分
  * @param text 选中的文字
@@ -15,22 +21,23 @@ const lineTypeMap: Record<QuickConsole.LineType, number> = {
  */
 export const getConsoleText = (
   text: string,
-  textEditor: vscode.TextEditor,
-  lineType: QuickConsole.LineType
+  fileName: string,
+  selection: vscode.Selection,
+  lineType: QuickConsole.LineType,
+  lineNum: number
 ) => {
   const config = getConfig()
-  const fileName = config.showFilename
-    ? `- FileName: ${textEditor.document.fileName}`
+  const fileNameText = config.showFilename
+    ? `- FileName: ${fileName}`
     : ''
   const lineNumber = config.showLines
-    ? `- Line: ${
-        (!text || textEditor.selection.isEmpty
-          ? textEditor.selection.active.line
-          : textEditor.selection.start.line) + lineTypeMap[lineType]
-      }`
+    ? `- Line: ${(!text || selection.isEmpty
+      ? lineNum
+      : selection.start.line) + lineTypeMap[lineType]
+    }`
     : ''
-  const textContent = text ? `- ${text}: ` : ''
-  const content = `${config.prefixContent} ${fileName} ${lineNumber} ${textContent}`
+  const textContent = getSafeText(text)
+  const content = `${config.prefixContent} ${fileNameText} ${lineNumber} ${textContent}`
 
   return content
 }
@@ -50,21 +57,27 @@ const consoleMap: Record<QuickConsole.LogType, string> = {
 export const getConsole = (
   text: string,
   textEditor: vscode.TextEditor,
+  selection: vscode.Selection,
   options: {
     type?: QuickConsole.LogType
     line?: QuickConsole.LineType
+    lineNum?: number
   } = {}
 ) => {
   const { type = 'info', line = 'current' } = options
   const config = getConfig()
   const consoleFunc = consoleMap[type]
-  const consoleText = getConsoleText(text, textEditor, line)
-  const _text = text ? `, ${text}` : ''
+  const consoleText = getConsoleText(text, textEditor.document.fileName, selection, line, options.lineNum ?? selection.active.line)
+  const _text = text ? `, ${text.replace(/(\n+$)/,'').replace(/\n+/g, ',')}` : ''
   const callFunc = config.showCallFunction
     ? ', new Error().stack?.split("\\n")[0]'
     : ''
-  // console.log(xxxx - [text], text, 'called function')
   const console = `${consoleFunc}('${consoleText}'${_text}${callFunc})\r\n`
 
   return console
+}
+
+/** 判断是否是单行光标 */
+export const isSingleCursor = (selections: readonly vscode.Selection[]) => {
+  return selections.length === 1
 }
