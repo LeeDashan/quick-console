@@ -15,6 +15,9 @@ export const initConsoleTarget = (context: vscode.ExtensionContext) => {
           const consoleText = getConsole(selectedText, textEditor, selection, {
             lineNum: selection.active.line + index
           })
+          if (!consoleText) {
+            return
+          }
           if (selection.isEmpty) {
             insertToLine(textEditor, editor, selection.active.line, consoleText)
           } else {
@@ -37,6 +40,9 @@ export const initConsoleAbove = (context: vscode.ExtensionContext) => {
             line: 'above',
             lineNum: selection.active.line + index
           })
+          if (!consoleText) {
+            return
+          }
           insertToLine(textEditor, editor, selection.active.line, consoleText)
         })
 
@@ -57,6 +63,9 @@ export const initConsoleBlow = (context: vscode.ExtensionContext) => {
             line: 'blow',
             lineNum: selection.active.line + index
           })
+          if (!consoleText) {
+            return
+          }
           insertToLine(
             textEditor,
             editor,

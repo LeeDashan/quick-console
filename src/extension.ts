@@ -8,6 +8,7 @@ import {
   initConsoleTarget,
 } from './consoleTarget'
 import { initCopyTarget } from './copyTarget'
+import { initSecondLogTarget } from './secondLogTarget'
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -17,6 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
   initConsoleTarget(context)
   initConsoleAbove(context)
   initConsoleBlow(context)
+  initSecondLogTarget(context)
 }
 
 // this method is called when your extension is deactivated

@@ -12,11 +12,17 @@ export const getConfig = (): QuickConsole.IConfig => {
   const showFilename = config.get<boolean>('showFilename')
   /** 是否显示调用 console 的 function name */
   const showCallFunction = config.get<boolean>('showCallFunction')
+  /** 默认的输出 log 的方法 */
+  const logFunction = config.get<string>('logFunction')
+  /** 第二种输出 log 的方法 */
+  const secondLogFunction = config.get<string>('secondLogFunction')
 
   return {
     prefixContent,
     showLines,
     showFilename,
     showCallFunction,
+    logFunction,
+    secondLogFunction
   }
 }

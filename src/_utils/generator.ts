@@ -42,16 +42,6 @@ export const getConsoleText = (
   return content
 }
 
-/**
- * console 的类型枚举
- * todo: 后期会改成读取配置
- */
-const consoleMap: Record<QuickConsole.LogType, string> = {
-  info: 'console.log',
-  error: 'console.error',
-  warn: 'console.warn',
-  debug: 'console.debug',
-}
 
 /** 获取 console 的输出信息 */
 export const getConsole = (
@@ -59,22 +49,28 @@ export const getConsole = (
   textEditor: vscode.TextEditor,
   selection: vscode.Selection,
   options: {
-    type?: QuickConsole.LogType
+    consoleFunc?: string
     line?: QuickConsole.LineType
     lineNum?: number
   } = {}
 ) => {
-  const { type = 'info', line = 'current' } = options
+  const { consoleFunc, line = 'current', lineNum } = options
   const config = getConfig()
-  const consoleFunc = consoleMap[type]
-  const consoleText = getConsoleText(text, textEditor.document.fileName, selection, line, options.lineNum ?? selection.active.line)
+  const consoleFunction = consoleFunc ?? config.logFunction
+  console.log('👉🏼👉🏼👉🏼 Look at this  - Line: 59 - consoleFunction: ', consoleFunction, consoleFunc, config.logFunction, config)
+
+  if(!consoleFunction) {
+    vscode.window.showErrorMessage('please set log function param in the settings.')
+    return
+  }
+  const consoleText = getConsoleText(text, textEditor.document.fileName, selection, line, lineNum ?? selection.active.line)
   const _text = text ? `, ${text.replace(/(\n+$)/,'').replace(/\n+/g, ',')}` : ''
   const callFunc = config.showCallFunction
     ? ', new Error().stack?.split("\\n")[0]'
     : ''
-  const console = `${consoleFunc}('${consoleText}'${_text}${callFunc})\r\n`
+  const consoleCmdText = `${consoleFunction}('${consoleText}'${_text}${callFunc})\r\n`
 
-  return console
+  return consoleCmdText
 }
 
 /** 判断是否是单行光标 */

@@ -2,7 +2,7 @@
 	"name": "quick-console-code",
 	"displayName": "QuickConsole",
 	"description": "针对 VS Code 的一款快速生成 console.log 的插件",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"engines": {
 		"vscode": "^1.69.0"
 	},
@@ -16,7 +16,8 @@
 		"onCommand:quick-console-code.copyTarget",
 		"onCommand:quick-console-code.consoleTarget",
 		"onCommand:quick-console-code.consoleAbove",
-		"onCommand:quick-console-code.consoleBlow"
+		"onCommand:quick-console-code.consoleBlow",
+		"onCommand:quick-console-code.secondLogTarget"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -27,22 +28,32 @@
 					"quickConsole.prefixContent": {
 						"type": "string",
 						"default": "👉🏼👉🏼👉🏼 Look at this",
-						"description": "This will add a Prefix Content before the console.log key."
+						"description": "This will add a Prefix Content before the log context."
 					},
 					"quickConsole.showLines": {
 						"type": "boolean",
 						"default": true,
-						"description": "This will add a Line Number after the console.log key."
+						"description": "This will add a Line Number after the log context."
 					},
 					"quickConsole.showFilename": {
 						"type": "boolean",
 						"default": false,
-						"description": "This will add a File Name after the console.log key."
+						"description": "This will add a File Name after the log context."
 					},
 					"quickConsole.showCallFunction": {
 						"type": "boolean",
 						"default": false,
-						"description": "This will add Call Function Name after the console.log key."
+						"description": "This will add Call Function Name after the log context."
+					},
+					"quickConsole.logFunction": {
+						"type": "string",
+						"default": "console.log",
+						"description": "This will change the log function, please make sure it works by yourself."
+					},
+					"quickConsole.secondLogFunction": {
+						"type": "string",
+						"default": "",
+						"description": "This will provide a second log function for you, when it triggered will output log under the cursor lines, and you need set hotkey at first. BTW please make sure it works by yourself too."
 					}
 				}
 			}
@@ -63,6 +74,11 @@
 			{
 				"command": "quick-console-code.consoleBlow",
 				"key": "Ctrl+Shift+b"
+			},
+			{
+				"command": "quick-console-code.secondLogTarget",
+				"key": "Ctrl+Shift+l",
+				"description": "This will trigger the second log function, output log under the cursor lines."
 			}
 		]
 	},

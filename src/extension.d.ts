@@ -17,6 +17,14 @@ declare namespace QuickConsole {
      * 是否显示调用 console 的 function name
      */
     showCallFunction?: boolean
+    /** 
+     * 默认的输出 log 的方法 
+     */
+    logFunction?: string
+    /** 
+     * 第二种输出 log 的方法 
+     */
+    secondLogFunction?: string
   }
 
   /** 日志类型 */

@@ -13,7 +13,9 @@ export const initCopyTarget = (context: vscode.ExtensionContext) => {
         const copyText = textEditor.document.getText(selection)
         // 生成 console 的文本
         const consoleText = getConsole(copyText, textEditor, selection)
-
+        if (!consoleText) {
+          return
+        }
         textArray.push(consoleText)
       })
       // 保存到剪贴板
